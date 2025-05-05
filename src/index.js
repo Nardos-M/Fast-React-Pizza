@@ -69,25 +69,29 @@ function Header() {
 }
 
 function Menu() {
-    const pizzas = pizzaData;
-    //const pizzas = []
-    const numPizzas = pizzas.length;
+  const pizzas = pizzaData;
+  //const pizzas = []
+  const numPizzas = pizzas.length;
   return (
     <main className="menu">
       <h2>our menu</h2>
 
-    {numPizzas > 0 ? (
-      <ul className="pizzas">
-        {pizzaData.map((pizza) => (
-          <Pizza pizzaObj={pizza} key={pizzaData.name} />
-        ))}
-      </ul>
-    ): (
+      {numPizzas > 0 ? (
+        <>
+          <p>
+            Authentic Italian cuisine. 6 create dishes to choose from. All from
+            our stone oven, all organic, all delicious.
+          </p>
+
+          <ul className="pizzas">
+            {pizzaData.map((pizza) => (
+              <Pizza pizzaObj={pizza} key={pizzaData.name} />
+            ))}
+          </ul>
+        </>
+      ) : (
         <p>we are still working on our menu. Please come back later </p>
-    )}
-
-
-
+      )}
 
       {/* <Pizza
         name="Pizza Spinaci"
@@ -106,18 +110,27 @@ function Menu() {
   );
 }
 
-function Pizza(props) {
-  console.log(props);
+function Pizza({ pizzaObj }) {
+  console.log(pizzaObj);
 
-//   yhie pizza keliele it wont be displayed return null slalnew
-  if(props.pizzaObj.soldOut) return null; 
+  //   yhie pizza keliele it wont be displayed return null slalnew
+  //if (pizzaObj.soldOut) return null;
+
   return (
-    <div className="pizza">
-      <img src={props.pizzaObj.photoName}></img>
+    <div className={`pizza ${pizzaObj.soldOut ? "sold-out" : ""}`}>
+      <img src={pizzaObj.photoName}></img>
       <li>
-        <h3>{props.pizzaObj.name}</h3>
-        <p>{props.pizzaObj.ingredients}</p>
-        <span>{props.pizzaObj.price + 3}</span>
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingredients}</p>
+
+
+        {/* {pizzaObj.soldOut ? (
+          <span>SOLD OUT</span>
+        ) : (
+          <span>{pizzaObj.price}</span>
+        )} */}
+
+        <span>{pizzaObj.soldOut ? "SOLD OUT" : pizzaObj.price + 3}</span>
       </li>
     </div>
   );
@@ -135,11 +148,11 @@ function Footer() {
   //    if(currentHour>=openHour&&currentHour<= closeHour)alert("we are opened");
   //    else alert("sorry we'are closed")
 
-//based on condition we can return more than one thing so this thing is true it wont render the component down
-// if(!isOpen)
-//     return (
-//         <p>We are happy to welcome you between {openHour}:00 - {closeHour}:00</p>
-//     );
+  //based on condition we can return more than one thing so this thing is true it wont render the component down
+  // if(!isOpen)
+  //     return (
+  //         <p>We are happy to welcome you between {openHour}:00 - {closeHour}:00</p>
+  //     );
 
   return (
     <>
@@ -158,16 +171,26 @@ function Footer() {
 
         {/* terinary operator */}
         {isOpen ? (
-            <div className="order">    
+          <Order closeHours={closeHour} />
+        ) : (
           <p>
-            we are open untill {closeHour}:00. come and visit us or order online
+            We are happy to welcome you between {openHour}:00 - {closeHour}:00
           </p>
-          <button className="btn">Order</button>
-            </div>
-        ): <p>We are happy to welcome you between {openHour}:00 - {closeHour}:00</p>}
-
+        )}
       </footer>
     </>
+  );
+}
+
+function Order({ closeHour, openHour }) {
+  return (
+    <div className="order">
+      <p>
+        we are open from {openHour}:00 to {closeHour}:00. come and visit us or
+        order online
+      </p>
+      <button className="btn">Order</button>
+    </div>
   );
 }
 
