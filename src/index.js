@@ -69,14 +69,26 @@ function Header() {
 }
 
 function Menu() {
+    const pizzas = pizzaData;
+    //const pizzas = []
+    const numPizzas = pizzas.length;
   return (
     <main className="menu">
       <h2>our menu</h2>
+
+    {numPizzas > 0 ? (
       <ul className="pizzas">
         {pizzaData.map((pizza) => (
-          <Pizza pizzaObj={pizza} key={pizzaData.name}  />
+          <Pizza pizzaObj={pizza} key={pizzaData.name} />
         ))}
       </ul>
+    ): (
+        <p>we are still working on our menu. Please come back later </p>
+    )}
+
+
+
+
       {/* <Pizza
         name="Pizza Spinaci"
         ingredients="Tomato, mozarella, spinach, and ricotta cheese"
@@ -96,6 +108,9 @@ function Menu() {
 
 function Pizza(props) {
   console.log(props);
+
+//   yhie pizza keliele it wont be displayed return null slalnew
+  if(props.pizzaObj.soldOut) return null; 
   return (
     <div className="pizza">
       <img src={props.pizzaObj.photoName}></img>
@@ -112,15 +127,45 @@ function Footer() {
   const currentHour = new Date().getHours();
   const openHour = 12;
   const closeHour = 22;
+  const isOpen = currentHour >= openHour && currentHour <= closeHour;
+  console.log(isOpen);
 
   console.log(currentHour);
   // if(currentHour>=openHour&&currentHour<=closeHour ? 'opened' : 'closed')
   //    if(currentHour>=openHour&&currentHour<= closeHour)alert("we are opened");
   //    else alert("sorry we'are closed")
+
+//based on condition we can return more than one thing so this thing is true it wont render the component down
+// if(!isOpen)
+//     return (
+//         <p>We are happy to welcome you between {openHour}:00 - {closeHour}:00</p>
+//     );
+
   return (
     <>
       <footer className="footer">
-        {new Date().toLocaleTimeString()}. we are currently open!!!
+        {/* {new Date().toLocaleTimeString()}. we are currently open!!! */}
+
+        {/* short circuiting */}
+        {/* {isOpen && (
+            <div className="order">    
+          <p>
+            we are open untill {closeHour}:00. come and visit us or order online
+          </p>
+          <button className="btn">Order</button>
+            </div>
+        )} */}
+
+        {/* terinary operator */}
+        {isOpen ? (
+            <div className="order">    
+          <p>
+            we are open untill {closeHour}:00. come and visit us or order online
+          </p>
+          <button className="btn">Order</button>
+            </div>
+        ): <p>We are happy to welcome you between {openHour}:00 - {closeHour}:00</p>}
+
       </footer>
     </>
   );
